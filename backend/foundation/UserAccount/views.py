@@ -7,13 +7,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .Entity.userSearch import SearchParameter
 from .models import User
-from .serializer import SearchParameterSerializer, model_serializer
-# from foundation.utility.Validator import DataclassInspector
-# from foundation.utility.serializer import model_serializer
-
-
-# from ..utility.serializer import create_serializer_class
-
+from .serializer import model_serializer
 
 def home(request):
     return HttpResponse("Hi, It's the creater !")
