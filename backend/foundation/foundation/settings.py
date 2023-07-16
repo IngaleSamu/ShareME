@@ -11,8 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+# from drf_yasg import openapi, inspectors
+# from foundation.utility.Validator import DataclassInspector
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -37,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # External
+    'drf_yasg',
+    # Internal
     'UserAccount'
 ]
 
@@ -130,3 +136,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    'JSON_EDITOR': True,
+}
+
+# # Update DEFAULT_FIELD_INSPECTORS
+# openapi.swagger_settings.DEFAULT_FIELD_INSPECTORS = [DataclassInspector()] + openapi.swagger_settings.DEFAULT_FIELD_INSPECTORS
+# inspectors.swagger_settings.DEFAULT_FIELD_INSPECTORS = [DataclassInspector()] + inspectors.swagger_settings.DEFAULT_FIELD_INSPECTORS
