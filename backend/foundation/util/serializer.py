@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import User
-from .Entity.userSearch import SearchParameter
+# from .Entity.userSearch import SearchParameter
+from util.Entity.userSearch import SearchParameter
+
 
 class DynamicSerializer(serializers.Serializer):
     def __init__(self, *args, **kwargs):

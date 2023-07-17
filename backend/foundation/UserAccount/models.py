@@ -11,11 +11,11 @@ class User(models.Model):
 
     profilePicture = models.CharField(default=None, max_length=1000, null=True)
     coverPicture = models.CharField(default=None, max_length=1000, null=True)
-    followers = models.IntegerField(default=0)
-    followings = models.IntegerField(default=0)
+    followers = models.IntegerField(default=0, null=True)
+    followings = models.IntegerField(default=0, null=True)
 
-    isAdmin = models.BooleanField(default=False)
-    description = models.TextField(default=None)
+    isAdmin = models.BooleanField(default=False, null=True)
+    description = models.TextField(default=None, max_length=1000, null=True)
 
     insertedAt = models.DateTimeField()
     updatedAt = models.DateTimeField(auto_now=True)

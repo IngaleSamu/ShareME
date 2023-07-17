@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     # External
     'drf_yasg',
     # Internal
-    'UserAccount'
+    'UserAccount',
+    # 'auth'
 ]
 
 MIDDLEWARE = [
