@@ -1,3 +1,4 @@
+import uuid
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
@@ -5,9 +6,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 
-from .Entity.userSearch import SearchParameter
-from .models import User
-from util.serializer import model_serializer
+from Util.Entity.userSearch import SearchParameter
+from .models import User, FollowRelationShips
+from Util.serializer import model_serializer
 
 def home(request):
     return HttpResponse("Hi, It's the creater !")
@@ -48,13 +49,14 @@ def get_user(request):
 #         500: 'Internal Server Error',
 #     }
 # )
-@api_view(['POST'])
-def add_user(request):
-    serializer = model_serializer(User, data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=201)
-    return Response(serializer.errors, status=400)
+# @api_view(['POST'])
+# def add_user(request):
+#     request.data['userId'] = str(uuid.uuid4())
+#     serializer = model_serializer(User, data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data, status=201)
+#     return Response(serializer.errors, status=400)
 
 # @swagger_auto_schema(
 #     method='post',
@@ -116,4 +118,51 @@ def delete_user(request):
         return Response(f"Deleted user account of {userName}!", status=200)
     except Exception as e:
         return Response("User doesn't exist!", status=400)
+
+@api_view(['POST'])
+def follow_user(request):
+    data = request.data
+    try:
+        userId = data['userId']
+        userIdToFollow = data['userIdToFollow']
+        user = User.objects.get(userId=data['userIdToFollow'])
+        if(user.isPrivate):
+            pass
+        else:
+            userFollow = FollowRelationShips()
+            userFollow.follower = userId
+            userFollow.following = userIdToFollow
+            userFollow.save()
+            pass
+            return Response(f"Followed user!", status=200)
+    except Exception as e:
+        return Response(f"Error : {e}", status=400)
+
+@api_view(['POST'])
+def perform_follow_request(request):
+    data = request.data
+    try:
+        userId = data['userId']
+        appealedUserId = data['userIdToFollow']
+        isAccepted = data.get('isAccepted')
+
+        if(isAccepted):
+            userFollow = FollowRelationShips()
+            userFollow.follower = appealedUserId
+            userFollow.following = userId
+            userFollow.save()
+
+            user = User.objects.get(userId=data['userId'])
+            user.followers += 1
+            user.save()
+
+            appealedUser = User.objects.get(userId=data['appealedUserId'])
+            appealedUser.followings += 1
+            appealedUser.save()
+
+            return Response(f"Followed user!", status=200)
+    except Exception as e:
+        return Response(f"Error : {e}", status=400)
+
+
 

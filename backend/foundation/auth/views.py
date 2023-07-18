@@ -1,3 +1,5 @@
+import uuid
+
 from django.db.models import Q
 from datetime import datetime
 from django.http import HttpResponse
@@ -6,9 +8,8 @@ from rest_framework.decorators import api_view
 from UserAccount.models import User
 from rest_framework.response import Response
 
-from UserAccount.serializer import model_serializer
-
-from util.encodeDecode import encodePassword
+from Util.serializer import model_serializer
+from Util.encodeDecode import encodePassword
 
 
 def home(request):
@@ -27,9 +28,11 @@ def register_user(request):
                 return Response("User already registered!", status=200)
             else:
                 user = User()
+                user.userName = data.get('email')
                 if data.get('name'):
                     user.userName = data.get('name')
                 user.email = data.get('email')
+                user.userId = str(uuid.uuid4())
                 user.password = encodePassword(data.get('passwaord'))
                 user.insertedAt = datetime.utcnow()
                 user.save()

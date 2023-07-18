@@ -6,6 +6,7 @@ from django.db import models
 class User(models.Model):
     id = models.AutoField(primary_key=True)
     userName = models.CharField(max_length=20)
+    userId = models.CharField(max_length=50)
     email = models.CharField(max_length=50)
     password = models.CharField(max_length=128)
 
@@ -20,5 +21,9 @@ class User(models.Model):
     insertedAt = models.DateTimeField()
     updatedAt = models.DateTimeField(auto_now=True)
     isActive = models.BooleanField(default=True)
-    # dateTest = models.DateTimeField(default=None)
-    # dateTest1 = models.DateTimeField(auto_now=True)
+    isPrivate = models.BooleanField(default=True)
+
+class FollowRelationShips(models.Model):
+    id = models.AutoField(primary_key=True)
+    follower = models.CharField(max_length=50)
+    following = models.CharField(max_length=50)

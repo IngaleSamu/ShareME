@@ -1,6 +1,6 @@
 from rest_framework import serializers
 # from .Entity.userSearch import SearchParameter
-from util.Entity.userSearch import SearchParameter
+from Util.Entity.userSearch import SearchParameter
 
 
 class DynamicSerializer(serializers.Serializer):
