@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+from sqlalchemy import create_engine
+import os
 
 from pathlib import Path
 # from drf_yasg import openapi, inspectors
@@ -25,11 +27,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-g$!^875gt&ic-_!h_z_p!9mk4-r9man&u66yv+lse$wg9wzda8'
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Engine setup
+
+print("########################################################### initializing engine")
+DIALECT = 'mysql+pymysql://root:root123@127.0.0.1:3306/sharemefoundation' # os.environ.get('DIALECT', 'mysql+pymysql://root:root123@127.0.0.1:3306/sharemefoundation')
+engine = create_engine(DIALECT, echo=False, pool_pre_ping=True, pool_size=30, max_overflow=15)
+
+print("DIALECT : {}".format(DIALECT))
+
+print("########################################################### initialized engine")
 
 # Application definition
 
